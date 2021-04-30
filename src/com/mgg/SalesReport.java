@@ -1,69 +1,61 @@
 package com.mgg;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 /*
  * This is the main class to 
  * print reports
  */
 public class SalesReport {
 
+	public static final Comparator<Sales> comparatorCustomer = new Comparator<Sales>(){
+
+		@Override
+		public int compare(Sales s1, Sales s2) {
+			return s1.getCustomer().getLastName().compareTo(s2.getCustomer().getLastName());
+		}
+			
+	};
+	
+	public static final Comparator<Sales> comparatorTotal = new Comparator<Sales>(){
+
+		@Override
+		public int compare(Sales s1, Sales s2) {
+			return s2.getSaleTotal().compareTo(s1.getSaleTotal());
+		}
+			
+	};
+	
+	public static final Comparator<Sales> comparatorGroup = new Comparator<Sales>(){
+
+		@Override
+		public int compare(Sales s1, Sales s2) {
+			if(s1.getStore().equals(s2.getStore())) {
+				return s1.getSalesPerson().getLastName().compareTo(s2.getSalesPerson().getLastName());
+			}
+			
+			return s1.getStore().getStoreCode().compareTo(s2.getStore().getStoreCode());
+		}
+			
+	};
+	
 	public static void main(String args[]) {
 
 		ArrayList<Sales> sales = LoadDatatbase.getSalesDb();
-		ArrayList<Stores> stores = LoadDatatbase.getStoresDb();
-		ArrayList<Persons> salesPersons = LoadDatatbase.getPersonDb();
+		
+		LinkedList salesL = new LinkedList(comparatorTotal);
+		for(Sales s: sales) {
+			salesL.add(s);
+		}
+		
+		Node currentNode = salesL.getstartSale();
+		while(currentNode.getNext() != null) {
+			System.out.println(currentNode.getSales().getSaleTotal());
+			currentNode = currentNode.getNext();
+		}
+		System.out.println(currentNode.getSales().getSaleTotal());
 
-
-		// Prints individual Sales
-				for (Sales s : sales) {
-					s.printSale();
-				}
-
-				
-				// Prints Store Summary Report
-				System.out.println("+------------------------------------------------------------------------------------------+\n"
-								 + "|  Store Sales Summary Report                                                              |\n"
-								 + "+------------------------------------------------------------------------------------------+");
-
-				System.out.println("Store\t\tManager\t\t\t\t  # Sales\t\t\tGrand Total");
-
-				for (Stores st : stores) {
-					st.printStoreSales();
-				}
-
-				Double storesTotal = 0.0;
-				int count = 0;
-				for (Stores st : stores) {
-					storesTotal = storesTotal + st.getsTotal();
-					count = count + st.getStoreSaleCount();
-				}
-
-				System.out.println("+----------------------------------------------------------------+\n" + "\t\t\t\t\t\t\t"
-						+ count + "\t\t$\t" + storesTotal);
-
-				
-				// Prints SalesPerson Summary Report
-				System.out.println("+----------------------------------------------------------------+\n"
-						+ "|  Salesperson Summary Report                                    |\n"
-						+ "+----------------------------------------------------------------+");
-
-				System.out.println("Salesperson\t\t\t\t# Sales\t\tGrand Total");
-
-				for (Persons sp : salesPersons) {
-					sp.printSalesPersonSummary();
-				}
-
-				Double salesPersonTotal = 0.0;
-				int numOfSales = 0;
-				for (Persons p : salesPersons) {
-					salesPersonTotal = salesPersonTotal + p.getTotalSale();
-					numOfSales = numOfSales + p.getSalesCount();
-				}
-
-				System.out.println("+----------------------------------------------------------------+\n" + "\t\t\t\t\t"
-						+ numOfSales + "\t\t$\t" + salesPersonTotal);
-
-			}
+		}
 
 
 }

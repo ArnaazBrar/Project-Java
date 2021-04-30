@@ -10,8 +10,9 @@ public class Sales {
 	private Persons customer;
 	private Persons salesPerson;
 	private ArrayList<Items> itemsList;
+	private double saleTotal;
 
-	
+
 	public Sales(Integer salesId, String salesCode, Stores store, Persons customer, Persons salesPerson,
 			ArrayList<Items> itemsList) {
 		super();
@@ -59,7 +60,8 @@ public class Sales {
 	public Integer getSalesId() {
 		return salesId;
 	}
-
+	
+	
 	public double getSumOfCosts() {
 		ArrayList<Items> saleItems = this.itemsList;
 		double sumTotal = 0.0;
@@ -71,6 +73,83 @@ public class Sales {
 
 	
 
+	public Double getSaleTotal() {
+
+		
+		ArrayList<Items> saleItems = this.itemsList;
+		double tax = 0.0;
+		double tCost = 0.0;
+
+		for (Items i : saleItems) {
+
+			if (i.getType().equals("PN")) {
+				Products p = (Products) i;
+				
+
+				tax = tax + p.getTax();
+				tCost = tCost + p.getCost();
+
+			} else if (i.getType().equals("PU")) {
+				Products p = (Products) i;
+				
+				tax = tax + p.getTax();
+				tCost = tCost + p.getCost();
+
+			} else if (i.getType().equals("PG")) {
+				Products p = (Products) i;
+				
+				tax = tax + p.getTax();
+				tCost = tCost + p.getCost();
+
+			} else if (i.getType().equals("SV")) {
+				Services sv = (Services) i;
+
+				tax = tax + sv.getTax();
+				tCost = tCost + sv.getCost();
+
+			} else if (i.getType().equals("SB")) {
+				Subscriptions sb = (Subscriptions) i;
+
+				tax = tax + sb.getTax();
+				tCost = tCost + sb.getCost();
+
+			}
+
+		}
+		
+		
+		double discount = 0.0;
+
+		switch (this.customer.getType()) {
+
+		case 'G':
+			discount = (tCost * 0.05);
+			break;
+
+		case 'P':
+			discount = (tCost * 0.10);
+			break;
+
+		case 'C':
+			discount = (tCost * 0.00);
+			break;
+
+		case 'E':
+			discount = (tCost * 0.15);
+			break;
+
+		default:
+			discount = 0.0;
+			break;
+
+		}
+
+		this.saleTotal = ((tCost + tax) - discount);
+		
+		return this.saleTotal;
+
+	}
+	
 	public void printSale() {
 		System.out.println("Sale :    #" + this.salesCode);
 		System.out.println("Store :    #" + this.store.getStoreCode());
@@ -169,12 +248,13 @@ public class Sales {
 
 		}
 
-		discount = discount;
-
-		double grandTotal = ((tCost + tax) - discount);
-		System.out.println("\t\t\t\t\t\t\t\t Grand Total $\t" + grandTotal);
+		this.saleTotal = ((tCost + tax) - discount);
+		
+		
+		System.out.println("\t\t\t\t\t\t\t\t Grand Total $\t" + this.saleTotal);
 
 	}
+	
 
 	@Override
 	public String toString() {
