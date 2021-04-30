@@ -92,7 +92,6 @@ public class Helpers {
 				address = new Address(addressId,ad.getStreet(),ad.getCity(),ad.getState(),ad.getZIP(),ad.getCountry());
 			} else {
 				address = null;
-				System.err.println("No Address Found for this street and zip");
 			}
 			rs.close();
 			ps.close();

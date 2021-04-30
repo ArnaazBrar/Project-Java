@@ -256,8 +256,10 @@ public class Sales {
 	}
 	
 	public void printSortedList() {
-		System.out.println(this.salesCode + "\t\t" + this.store.getStoreCode() + "\t\t" + this.customer.getLastName() + "," + this.customer.getFirstName()
-		+ "\t\t" + this.salesPerson.getLastName() + "," + this.salesPerson.getFirstName() + "\t\t$\t" + this.getSaleTotal());
+
+		System.out.printf("%-25s" + "%-25s" + "%-25s" + "%-25s" + "$	%-25.2f", this.salesCode, this.store.getStoreCode(), this.customer.getLastName() + "," + this.customer.getFirstName(),
+		this.salesPerson.getLastName() + "," + this.salesPerson.getFirstName(), this.getSaleTotal().floatValue());
+		System.out.println("");
 	}
 	
 

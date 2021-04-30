@@ -13,6 +13,11 @@ public class SalesReport {
 
 		@Override
 		public int compare(Sales s1, Sales s2) {
+			
+			if(s1.getCustomer().getLastName().equals(s2.getCustomer().getLastName())) {
+				return s1.getSalesCode().compareTo(s2.getSalesCode());
+			}
+			
 			return s1.getCustomer().getLastName().compareTo(s2.getCustomer().getLastName());
 		}
 
@@ -44,7 +49,7 @@ public class SalesReport {
 
 		ArrayList<Sales> sales = LoadDatatbase.getSalesDb();
 
-		LinkedList salesList1 = new LinkedList(comparatorCustomer);
+		LinkedList<Sales> salesList1 = new LinkedList<Sales>(comparatorCustomer);
 		for (Sales s : sales) {
 			salesList1.add(s);
 		}
@@ -52,22 +57,20 @@ public class SalesReport {
 		/*
 		 * Prints Summary Report sorted by sale Customer's lastName,firstName
 		 */
-		System.out.println("+------------------------------------------------------------------------------------------+\n"
-						 + "|  Sales by Customer                                                                       |\n"
-					   	 + "+------------------------------------------------------------------------------------------+");
+		System.out.println("+--------------------------------------------------------------------------------------------------------------+\n"
+						 + "|  Sales by Customer                                                                                           |\n"
+					   	 + "+--------------------------------------------------------------------------------------------------------------+");
 
-		System.out.println("Sale\t\tStore\t\tCustomer\t\tSalesperson\t\t\tTotal");
-
-		Node currentNode1 = salesList1.getstartSale();
-		while (currentNode1.getNext() != null) {
-			currentNode1.getSales().printSortedList();
-			currentNode1 = currentNode1.getNext();
-		}
-		currentNode1.getSales().printSortedList();
+		System.out.printf("%-25s" + "%-25s" + "%-25s" + "%-25s" + "	%-25s","Sale", "Store", "Customer", "Salesperson", "Total");
+		System.out.println("");
 		
-		System.out.println("\n\n#######################################################################################################\n\n");
+		for(Sales sale: salesList1) {
+			sale.printSortedList();
+		}
+		
+		System.out.println("\n\n#################################################################################################################\n\n");
 
-		LinkedList salesList2 = new LinkedList(comparatorTotal);
+		LinkedList<Sales> salesList2 = new LinkedList<Sales>(comparatorTotal);
 		for (Sales s : sales) {
 			salesList2.add(s);
 		}
@@ -76,37 +79,36 @@ public class SalesReport {
 		 * Prints Summary Report sorted by sale total
 		 */
 		System.out.println(
-				"+------------------------------------------------------------------------------------------+\n"
-						+ "|  Sales by Total                                                                          |\n"
-						+ "+------------------------------------------------------------------------------------------+");
+				"+--------------------------------------------------------------------------------------------------------------+\n"
+						+ "|  Sales by Total                                                                                              |\n"
+						+ "+--------------------------------------------------------------------------------------------------------------+");
 
-		System.out.println("Sale\t\tStore\t\tCustomer\t\tSalesperson\t\t\tTotal");
+		System.out.printf("%-25s" + "%-25s" + "%-25s" + "%-25s" + "	%-25s","Sale", "Store", "Customer", "Salesperson", "Total");
+		System.out.println("");
 
-		Node currentNode2 = salesList2.getstartSale();
-		while (currentNode2.getNext() != null) {
-			currentNode2.getSales().printSortedList();
-			currentNode2 = currentNode2.getNext();
+		for(Sales sale: salesList2) {
+			sale.printSortedList();
 		}
-		currentNode2.getSales().printSortedList();
 
-		System.out.println("\n\n#######################################################################################################\n\n");
+		System.out.println("\n\n#################################################################################################################\n\n");
 		
-//		LinkedList salesList3 = new LinkedList(comparatorGroup);
+//		LinkedList<Sales> salesList3 = new LinkedList<Sales>(comparatorGroup);
 //		for (Sales s : sales) {
 //			salesList3.add(s);
 //		}
 //
-////		/*
+//		/*
 //		 * Prints Summary Report sorted by storeCode and total
 //		 */
 //		System.out.println(
-//				"+------------------------------------------------------------------------------------------+\n"
-//			  + "|  Sales by Store                                                                          |\n"
-//			  + "+------------------------------------------------------------------------------------------+");
+//				"+--------------------------------------------------------------------------------------------------------------+\n"
+//			  + "|  Sales by Store                                                                                              |\n"
+//			  + "+--------------------------------------------------------------------------------------------------------------+");
 //
-//		System.out.println("Sale\t\tStore\t\tCustomer\t\tSalesperson\t\t\tTotal");
+//		System.out.printf("%-25s" + "%-25s" + "%-25s" + "%-25s" + "	%-25s","Sale", "Store", "Customer", "Salesperson", "Total");
+//		System.out.println("");
 //
-//		Node currentNode3 = salesList3.getstartSale();
+//		Node<Sales> currentNode3 = salesList3.getstartSale();
 //		while (currentNode3.getNext() != null) {
 //			currentNode3.getSales().printSortedList();
 //			currentNode3 = currentNode3.getNext();

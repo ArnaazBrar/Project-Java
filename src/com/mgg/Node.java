@@ -1,38 +1,38 @@
 package com.mgg;
 
-public class Node {
+public class Node<T> {
 
-	private Sales item;
-	private Node next;
+	private T item;
+	private Node<T> next;
 
 	public Node() {
 		this.item = null;
 		this.next = null;
 	}
 
-	public Node(Sales item) {
+	public Node(T item) {
 		this.item = item;
 		this.next = null;
 	}
 
-	public Node(Sales item, Node next) {
+	public Node(T item, Node<T> next) {
 		this.item = item;
 		this.next = next;
 	}
 
-	public Sales getSales() {
+	public T getSales() {
 		return item;
 	}
 
-	public Node getNext() {
+	public Node<T> getNext() {
 		return next;
 	}
 
-	public void setNext(Node next) {
+	public void setNext(Node<T> next) {
 		this.next = next;
 	}
 
-	public void setItem(Sales item) {
+	public void setItem(T item) {
 		this.item = item;
 	}
 }

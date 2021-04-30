@@ -1,41 +1,42 @@
 package com.mgg;
 
 import java.util.Comparator;
+import java.util.Iterator;
 
-public class LinkedList {
+public class LinkedList<T> implements Iterable<T> {
 	// Variables
-	private Node startSale;
-	private Node endSale;
+	private Node<T> startSale;
+	private Node<T> endSale;
 	private int size = 0;
 	private int index;
-	private final Comparator<Sales> comparator;
+	private final Comparator<T> comparator;
 	
-	public LinkedList(Comparator<Sales> comparator) {
+	public LinkedList(Comparator<T> comparator) {
 		this.startSale = null;
 		this.endSale = null;
 		this.comparator = comparator;
 	}
 
-	public LinkedList(Node startSale, Node endSale, Comparator<Sales> comparator) {
+	public LinkedList(Node<T> startSale, Node<T> endSale, Comparator<T> comparator) {
 		this.startSale = startSale;
 		this.endSale = endSale;
 		this.comparator = comparator;
 		startSale.setNext(endSale);
 	}
 
-	public Node getstartSale() {
+	public Node<T> getstartSale() {
 		return startSale;
 	}
 
-	public void setstartSale(Node startSale) {
+	public void setstartSale(Node<T> startSale) {
 		this.startSale = startSale;
 	}
 
-	public Node getendSale() {
+	public Node<T> getendSale() {
 		return endSale;
 	}
 
-	public void setendSale(Node endSale) {
+	public void setendSale(Node<T> endSale) {
 		this.endSale = endSale;
 	}
 
@@ -48,7 +49,7 @@ public class LinkedList {
 
 	public int getSize() {
 		size = 0;
-		Node Sales = startSale;
+		Node<T> Sales = startSale;
 		if (Sales == null) {
 			size = 0;
 		} else {
@@ -77,16 +78,16 @@ public class LinkedList {
 	 * 
 	 * @param t
 	 */
-	public void add(Sales t) {
-		Node newSales = new Node(t);
+	public void add(T t) {
+		Node<T> newSales = new Node<T>(t);
 		size++;
 		index++;
 		if (startSale == null && endSale == null) {
 			startSale = newSales;
 			endSale = newSales;
 		} else {
-			Node currentSales = startSale;
-			Node afterSales = currentSales.getNext();
+			Node<T> currentSales = startSale;
+			Node<T> afterSales = currentSales.getNext();
 			if (this.comparator.compare(currentSales.getSales(), newSales.getSales()) > 0) {
 				startSale = newSales;
 				startSale.setNext(currentSales);
@@ -96,12 +97,12 @@ public class LinkedList {
 					if (this.comparator.compare(afterSales.getSales(), newSales.getSales()) < 0) {
 						afterSales = afterSales.getNext();
 					} else if (this.comparator.compare(afterSales.getSales(), newSales.getSales()) == 0) {
-						Node evenAfterSales = afterSales.getNext();
+						Node<T> evenAfterSales = afterSales.getNext();
 						afterSales.setNext(newSales);
 						newSales.setNext(evenAfterSales);
 						break;
 					} else if (this.comparator.compare(afterSales.getSales(), newSales.getSales()) > 0) {
-						Node beforeSales = startSale;
+						Node<T> beforeSales = startSale;
 						while (beforeSales.getNext() != afterSales) {
 							beforeSales = beforeSales.getNext();
 						}
@@ -110,23 +111,19 @@ public class LinkedList {
 						break;
 					}
 				}
-				Node beforeSales = startSale;
+				Node<T> beforeSales = startSale;
 				while (beforeSales.getNext() != afterSales) {
 					beforeSales = beforeSales.getNext();
 				}
 				if (this.comparator.compare(beforeSales.getSales(), newSales.getSales()) < 0) {
 					beforeSales.setNext(newSales);
-					if(newSales.getNext() != null) {
-						Node evenAfterSales = newSales.getNext();
-						afterSales.setNext(evenAfterSales);
-					}
 					newSales.setNext(afterSales);
 				}
 			}
 
 		}
 
-		Node currentSales = startSale;
+		Node<T> currentSales = startSale;
 		while (currentSales.getNext() != null) {
 			currentSales = currentSales.getNext();
 		}
@@ -141,7 +138,7 @@ public class LinkedList {
 	 */
 	public void remove(int position) {
 		getSize();
-		Node currentNode = startSale;
+		Node<T> currentNode = startSale;
 		if (position < 0 || position > index) {
 			System.out.println("IndexOutOfBoundsException");
 		} else if (position == 0) {
@@ -160,8 +157,8 @@ public class LinkedList {
 			for (int i = 0; i < position - 1; i++) {
 				currentNode = currentNode.getNext();
 			}
-			Node toBeRemoved = currentNode.getNext();
-			Node nextNode = toBeRemoved.getNext();
+			Node<T> toBeRemoved = currentNode.getNext();
+			Node<T> nextNode = toBeRemoved.getNext();
 			currentNode.setNext(nextNode);
 			size--;
 			index--;
@@ -175,9 +172,9 @@ public class LinkedList {
 	 * @param position
 	 * @return
 	 */
-	public Sales getSales(int position) {
+	public T getSales(int position) {
 		getSize();
-		Node headNode = startSale;
+		Node<T> headNode = startSale;
 		if (position < index || position > index) {
 			return null;
 		} else if (position == 0) {
@@ -194,6 +191,11 @@ public class LinkedList {
 			}
 			return headNode.getSales();
 		}
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new LinkedListIterator<T>(this);
 	}
 
 }
