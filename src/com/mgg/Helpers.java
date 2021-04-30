@@ -271,6 +271,7 @@ public class Helpers {
 		 */
 		public static boolean isDuplicateAddress(Address a) {
 			Integer addressId = null;
+			boolean flag = true;
 			Connection conn = Factory.getConnection();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -287,7 +288,7 @@ public class Helpers {
 				if (rs.next()) {
 					addressId = rs.getInt("addressId");
 				} else {
-					return false;
+					flag = false;
 				}
 				rs.close();
 				ps.close();
@@ -295,7 +296,7 @@ public class Helpers {
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
-				return true;
+				return flag;
 	 
 		}
 		
@@ -304,6 +305,7 @@ public class Helpers {
 		 */
 		public static boolean isDuplicateEmailAddress(String e) {
 			Integer emailId = null;
+			boolean flag = true;
 			Connection conn = Factory.getConnection();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -316,7 +318,7 @@ public class Helpers {
 				if (rs.next()) {
 					emailId = rs.getInt("emailId");
 				} else {
-					return false;
+					flag = false;
 				}
 				rs.close();
 				ps.close();
@@ -324,7 +326,7 @@ public class Helpers {
 			} catch (SQLException e1) {
 				throw new RuntimeException(e1);
 			}
-				return true;
+				return flag;
 	 
 		}
 

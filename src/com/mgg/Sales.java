@@ -255,6 +255,11 @@ public class Sales {
 
 	}
 	
+	public void printSortedList() {
+		System.out.println(this.salesCode + "\t\t" + this.store.getStoreCode() + "\t\t" + this.customer.getLastName() + "," + this.customer.getFirstName()
+		+ "\t\t" + this.salesPerson.getLastName() + "," + this.salesPerson.getFirstName() + "\t\t$\t" + this.getSaleTotal());
+	}
+	
 
 	@Override
 	public String toString() {
